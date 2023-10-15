@@ -18,5 +18,15 @@ addButtonEL.addEventListener("click", function() {
     let inputValue = inputFieldEl.value
     push(packingListDB, inputValue)
     console.log(inputValue)
-    packingListEl.innerHTML += `<li>${inputValue}</li>`
+    
+    clearInputField()
+    appendValueToPackingListEl(inputValue)
 })
+
+function clearInputField() {
+    inputFieldEl.value = ""
+}
+
+function appendValueToPackingListEl(value) {
+    packingListEl.innerHTML += `<li>${value}</li>`
+}
