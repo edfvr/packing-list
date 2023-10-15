@@ -22,16 +22,18 @@ addButtonEL.addEventListener("click", function() {
     
 })
 
-
-//Fetching items from our DB
 onValue(packingListInDB, function(dataInDB) {
-    let dataInDBArr = Object.entries(dataInDB.val())
-    
-    packingListEl.innerHTML = ""
-    
-    for (let i = 0; i < dataInDBArr.length; i++) {
-        let currentItem = dataInDBArr[i]
-        appendValueToPackingListEl(currentItem)
+    // Challenge: Change the onValue code so that it uses snapshot.exists() to show items when there are items in the database and if there are not displays the text 'No items here... yet'.
+    if (dataInDB.exists()) {
+        let dataInDBArr = Object.entries(dataInDB.val())
+        packingListEl.innerHTML = ""
+        
+        for (let i = 0; i < dataInDBArr.length; i++) {
+            let currentItem = dataInDBArr[i]
+            appendValueToPackingListEl(currentItem)
+        }
+    } else {
+        packingListEl.innerHTML = "No items here... yet"
     }
 })
 
