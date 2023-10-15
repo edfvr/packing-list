@@ -1,5 +1,5 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"
-import {getDatabase, ref, push, onValue} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
+import {getDatabase, ref, push, onValue, remove} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
 
 const appSettings = {
     databaseURL: "https://packing-list-e2ffb-default-rtdb.europe-west1.firebasedatabase.app/"
@@ -25,12 +25,13 @@ addButtonEL.addEventListener("click", function() {
 
 //Fetching items from our DB
 onValue(packingListInDB, function(dataInDB) {
-    let dataInDBArr = Object.values(dataInDB.val())
+    let dataInDBArr = Object.entries(dataInDB.val())
+    
     packingListEl.innerHTML = ""
     
     for (let i = 0; i < dataInDBArr.length; i++) {
-        let item = dataInDBArr[i]
-        appendValueToPackingListEl(item)
+        let currentItem = dataInDBArr[i]
+        appendValueToPackingListEl(currentItem)
     }
 })
 
@@ -38,6 +39,18 @@ function clearInputField() {
     inputFieldEl.value = ""
 }
 
-function appendValueToPackingListEl(value) {
-    packingListEl.innerHTML += `<li>${value}</li>`
+function appendValueToPackingListEl(item) {
+    let itemID = item[0]
+    let itemValue = item[1]
+
+    let newEl = document.createElement("li")
+    newEl.textContent += itemValue
+
+    newEl.addEventListener("click", function () {
+        let exactLocationOfItemInDB = ref(database, `packingList/${itemID}`)
+        remove(exactLocationOfItemInDB)
+    })
+    packingListEl.append(newEl)
 }
+
+//fetched ID, used createElement() instead of innerHTML so we can add event listerners to delete
