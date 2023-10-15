@@ -11,10 +11,12 @@ const packingListDB = ref(database, "packingList")
 
 const inputFieldEl = document.getElementById("input-field")
 const addButtonEL = document.getElementById("add-btn")
+const packingListEl = document.getElementById("packing-list")
 
 
 addButtonEL.addEventListener("click", function() {
     let inputValue = inputFieldEl.value
     push(packingListDB, inputValue)
     console.log(inputValue)
+    packingListEl.innerHTML += `<li>${inputValue}</li>`
 })
